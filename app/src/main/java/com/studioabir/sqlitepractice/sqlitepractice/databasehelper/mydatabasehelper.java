@@ -2,6 +2,7 @@ package com.studioabir.sqlitepractice.sqlitepractice.databasehelper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ public class mydatabasehelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String insertquery = "CREATE TABLE "+TABLE_NAME+"("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+NAME+" TEXT, "+AGE+" TEXT)";
     private static final String droptable = "DROP TABLE IF EXISTS "+TABLE_NAME;
+    private static final String showquery = "SELECT * FROM "+TABLE_NAME;
     private Context context;
 
     public mydatabasehelper(Context context) {
@@ -56,7 +58,6 @@ public class mydatabasehelper extends SQLiteOpenHelper {
         }
     }
 
-
     public long insertdata(String name, String age)
     {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -67,4 +68,36 @@ public class mydatabasehelper extends SQLiteOpenHelper {
         long rowid = sqLiteDatabase.insert(TABLE_NAME,null,contentValues);
         return rowid;
     }
+
+    public Cursor displayAllData()
+    {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(showquery,null);
+        return cursor;
+    }
+
+    public boolean UpdateData(String id, String name, String age)
+    {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NAME,name);
+        contentValues.put(AGE,age);
+        contentValues.put(ID,id);
+
+        sqLiteDatabase.update(TABLE_NAME,contentValues,ID+" = ?",new String[]{id});
+        return true;
+    }
+
+
+    public Integer deleteData(String id)
+    {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        return sqLiteDatabase.delete(TABLE_NAME,ID+" = ?",new String[]{ id });
+    }
+
+
+
+
+
+
 }

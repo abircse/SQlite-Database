@@ -16,6 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".normallistview.ListActivity" />
+        <activity android:name=".customlistview.CustomListActivity" />
+        <activity android:name=".recyclerview.EmployeeActivity"></activity>
     </application>
 
 </manifest>
